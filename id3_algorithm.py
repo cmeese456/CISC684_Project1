@@ -22,7 +22,6 @@ def get_entropy(node_label, positive_instances, negative_instances, total):
 
 
 def get_attribute_labels(dataset):
-    dataset_columns = dataset.shape[1] - 1  # subtract one to eliminate double counting the class column
     column_names = dataset.columns
 
     attribute_labels_list = []
