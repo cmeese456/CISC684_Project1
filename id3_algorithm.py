@@ -54,9 +54,45 @@ def get_attribute_labels(dataset):
 def information_gain_heuristic():
     return ''
 
+#! Note: Variance Impurity Heuristics are based off Evan's work on the Node and Attribute Classes
+#! They will only work once we merge this code with his side branch
+# This function calculates the variance impurity of all attributes in attr_dict in comparison to the total set s
+#! Important: attr_dict must only contain attributes to be tested, prune the input based on tree level before calling
+def variance_impurity_heuristic(s, attr_dict):
+    # Keep a list of the variance gain of each attribute
+    gain_list = []
 
-def variance_impurity_heuristic():
-    return ''
+    # Calculate the variance impurity gain of each attribute in the list
+    for attr in attr_dict:
+        gain_list.append(variance_impurity_gain(s, attr_dict[attr]))
+
+    # Return the label of the attribute with the highest gain from the list
+    return max(gain_list, key=lambda item:item[1])[0]
+
+def variance_impurity_gain(s, attr):
+    # Get the variance impurity of the entire set
+    variance_s = variance_impurity(s.label, s.getTotalVal1(), s.getTotalVal0(), s.getTotal())
+
+    # Get the variance impurity of the subset that has "0" as a value for the attribute
+    variance_attr_0 = variance_impurity(attr.label, attr.val0_pos, attr.val0_neg, attr.getTotalVal0())
+
+    # Get the variance impurity of the subset that has "1" as the value for the attribute
+    varriance_attr_1 = variance_impurity(attr.label, attr.val1_pos, attr.val1_neg, attr.getTotalVal0())
+
+    # Subtract the weighted variance impurity of each value from that of the total set
+    variance_gain = variance_s[1] - ((attr.getTotalVal0() / attr.getTotal()) * variance_attr_0[1] - (attr.getTotalVal1() / attr.getTotal()) * variance_attr_1[1])
+
+    # Return label and gain
+    return attr.label, gain
+
+# Variance Impurity = (K0/K)*(K1/K)
+def variance_impurity(node_label, val1_instances, val0_instances, total):
+    # Calculate the variance impurity using the formula from the homework
+    variance_impurity = (val1_instances / total) * (val0_instances / total)
+
+    # Return the impurity and the label
+    return node_label, entropy
+
 
 
 def standard_output_format():
