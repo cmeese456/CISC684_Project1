@@ -11,6 +11,23 @@ following two heuristics for selecting the next attribute.
 
 2. Variance impurity heuristic (described below)"""
 
+# Below is some code to ensure the program is called with the correct arguments and to grab the input values
+#! It is commented for now until we need to use it and test it
+"""
+# Ensure arguments were passed into the application
+if(len(sys.argv) != 6)
+    print 'Incorrect Usage! Please enter six arguments: <L>, <K>, <training-set>, <validation-set>, <test-set>, <to-print>'
+    sys.exit(2)
+
+# Get command line arguments
+l = sys.argv[0]
+k = sys.argv[1]
+training_set = sys.argv[2]
+validation_set = sys.argv[3]
+test_set = sys.argv[4]
+to_print = sys.argv[5]
+"""
+
 
 df = pd.read_csv('data_sets2/data_sets2/training_set.csv')
 
