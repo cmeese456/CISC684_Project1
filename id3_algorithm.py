@@ -1,6 +1,7 @@
 import pandas as pd
 import sys
 import math
+import random
 
 """This file is for implementing the ID3 decision tree learning algorithm. As discussed in class,
 the main step in decision tree learning is choosing the next attribute to split on. Implement the
@@ -119,3 +120,71 @@ def standard_output_format():
 
 def print_tree():
     return ''
+
+# Computes the number of non-leaf
+# nodes in a tree.
+def countNonleaf(root):
+
+    # Base cases.
+    if (root == None or (root.left == None and
+                         root.right == None)):
+        return 0
+
+    # If root is Not None and its one of
+    # its child is also not None
+    return (1 + countNonleaf(root.left) +
+                countNonleaf(root.right))
+
+# Implementation of the Post Pruning Algorithm
+# Input: An integer L and an integer K
+# Return: Post-pruned decision tree
+def post_pruning(L, K):
+    # Build a decision tree using all the training data
+    #? This will most likely need to be done using ID3 which is on Evan's Branch
+    #! Reminder to update this once we merge Evan's fork with our main codebase
+    decision_tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
+
+    # Optimal Decision Tree variable is initially set to the unpruned tree
+    optimal_d = decision_tree
+
+    # Begin pruning with a Loop from 1 to L
+    for x in range(1, L)
+        # Copy the current most optimal tree into a new tree d_prime
+        d_prime = optimal_d
+
+        # Select a random number M between 1 and K
+        # random.randrange(start, stop, step)
+        m = random.randrange(1, K, 1)
+
+        # Loop from 1 to m and start pruning subtrees
+        for x in range(1, m)
+            # Let n denote the number of non-leaf nodes in the decision tree d_prime
+            n = countNonleaf(d_prime)
+
+            # Order the nodes in d_prime from 1 to n
+            #! Reminder to implement
+            node_list = ""
+
+            # Select a random number between 1 and n, assign it to p
+            p = random.randrange(1, n, 1)
+
+            # Replace the subtree rooted at P in d_prime with a leaf node.
+            # Assign the leaf node the value of the majority class
+            #! Reminder to implement
+            """ Not sure exactly how to implement this. Need a better understanding of Evan's Tree Code """
+
+        # End inner loop and evaluate the accuracy of d_prime on the validation set
+        # First check the accuracy of our current optimal tree
+        #! Reminder to implement this
+        optimal_d_accuracy = "Percent correctly classified examples"
+
+        # Calculate the accuracy of our newly pruned tree
+        d_prime_accuracy = "Percent correctly classified examples"
+
+        # If d_prime_accuracy > optimal_d_accuracy, replace optimal_d with d_prime
+        if (d_prime_accuracy > optimal_d_accuracy)
+            optimal_d = d_prime
+
+    # Return the pruned tree with the best accuracy
+    return optimal_d
+
