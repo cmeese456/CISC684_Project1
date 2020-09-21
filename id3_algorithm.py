@@ -77,13 +77,13 @@ def variance_impurity_gain(s, attr):
     variance_attr_0 = variance_impurity(attr.label, attr.val0_pos, attr.val0_neg, attr.getTotalVal0())
 
     # Get the variance impurity of the subset that has "1" as the value for the attribute
-    varriance_attr_1 = variance_impurity(attr.label, attr.val1_pos, attr.val1_neg, attr.getTotalVal0())
+    variance_attr_1 = variance_impurity(attr.label, attr.val1_pos, attr.val1_neg, attr.getTotalVal0())
 
     # Subtract the weighted variance impurity of each value from that of the total set
     variance_gain = variance_s[1] - ((attr.getTotalVal0() / attr.getTotal()) * variance_attr_0[1] - (attr.getTotalVal1() / attr.getTotal()) * variance_attr_1[1])
 
     # Return label and gain
-    return attr.label, gain
+    return attr.label, variance_gain
 
 # Variance Impurity = (K0/K)*(K1/K)
 def variance_impurity(node_label, val1_instances, val0_instances, total):
@@ -91,7 +91,7 @@ def variance_impurity(node_label, val1_instances, val0_instances, total):
     variance_impurity = (val1_instances / total) * (val0_instances / total)
 
     # Return the impurity and the label
-    return node_label, entropy
+    return node_label, variance_impurity
 
 
 
