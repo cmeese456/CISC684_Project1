@@ -11,6 +11,23 @@ following two heuristics for selecting the next attribute.
 
 2. Variance impurity heuristic (described below)"""
 
+# Below is some code to ensure the program is called with the correct arguments and to grab the input values
+#! It is commented for now until we need to use it and test it
+"""
+# Ensure arguments were passed into the application
+if(len(sys.argv) != 6)
+    print 'Incorrect Usage! Please enter six arguments: <L>, <K>, <training-set>, <validation-set>, <test-set>, <to-print>'
+    sys.exit(2)
+
+# Get command line arguments
+l = sys.argv[0]
+k = sys.argv[1]
+training_set = sys.argv[2]
+validation_set = sys.argv[3]
+test_set = sys.argv[4]
+to_print = sys.argv[5]
+"""
+
 
 df = pd.read_csv('data_sets2/data_sets2/training_set.csv')
 
@@ -141,14 +158,15 @@ def countNonleaf(root):
 def post_pruning(L, K):
     # Build a decision tree using all the training data
     #? This will most likely need to be done using ID3 which is on Evan's Branch
-    #! Reminder to update this once we merge Evan's fork with our main codebase
-    decision_tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
+    #! Reminder to update this once we merge Evan's fork with our main codebase, commented for now
+    #decision_tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
+    decision_tree = ""
 
     # Optimal Decision Tree variable is initially set to the unpruned tree
     optimal_d = decision_tree
 
     # Begin pruning with a Loop from 1 to L
-    for x in range(1, L)
+    for x in [1, L]:
         # Copy the current most optimal tree into a new tree d_prime
         d_prime = optimal_d
 
@@ -157,7 +175,7 @@ def post_pruning(L, K):
         m = random.randrange(1, K, 1)
 
         # Loop from 1 to m and start pruning subtrees
-        for x in range(1, m)
+        for x in range(1, m):
             # Let n denote the number of non-leaf nodes in the decision tree d_prime
             n = countNonleaf(d_prime)
 
@@ -182,7 +200,7 @@ def post_pruning(L, K):
         d_prime_accuracy = "Percent correctly classified examples"
 
         # If d_prime_accuracy > optimal_d_accuracy, replace optimal_d with d_prime
-        if (d_prime_accuracy > optimal_d_accuracy)
+        if (d_prime_accuracy > optimal_d_accuracy):
             optimal_d = d_prime
 
     # Return the pruned tree with the best accuracy
