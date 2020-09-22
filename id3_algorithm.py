@@ -31,6 +31,7 @@ to_print = sys.argv[5]
 # Pandas Data Frame
 df = pd.read_csv('data_sets2/data_sets2/training_set.csv')
 
+
 # Evan's Node Class
 class Node:
     def __init__(self, label=None):
@@ -78,6 +79,7 @@ class Node:
 
         return str(self.label) """
 
+
 def printy(node):
     if node:
         print(node)
@@ -86,6 +88,7 @@ def printy(node):
         if node.right:
             printy(node.right)
     return
+
 
 # Get the label (i.e. attribute name) with the highest information gain.
 #
@@ -97,6 +100,7 @@ def information_gain_heuristic(s, attr_list, df):
         gain_list.append(information_gain(s, attr, df))
     return max(gain_list, key=lambda item:item[1])[0]
 
+
 # Get the information gain for an attribute.
 #
 # This version uses Pandas directly, without using my Attribute
@@ -106,11 +110,21 @@ def information_gain(s, attr, df):
     s_pos = len(df.loc[(df[s] == 1)])
     s_neg = len(df.loc[(df[s] == 0)])
     s_total = len(df.index)
-    attr_val0_pos = len(df.loc[(df[s] == 1) & df[attr] == 0])
-    attr_val0_neg = len(df.loc[(df[s] == 0) & df[attr] == 0])
+    attr_val0_pos = 0
+    attr_val0_neg = 0
+    attr_val1_pos = 0
+    attr_val1_neg = 0
+    for i in range(len(df[s])):
+        if df[s][i] == 1 and df[attr][i] == 0:
+            attr_val0_pos += 1
+        elif df[s][i] == 0 and df[attr][i] == 0:
+            attr_val0_neg += 1
+        elif df[s][i] == 1 and df[attr][i] == 1:
+            attr_val1_pos += 1
+        elif df[s][i] == 0 and df[attr][i] == 1:
+            attr_val1_neg += 1
+
     attr_val0_total = len(df.loc[(df[attr] == 0)])
-    attr_val1_pos = len(df.loc[(df[s] == 1) & df[attr] == 1])
-    attr_val1_neg = len(df.loc[(df[s] == 0) & df[attr] == 1])
     attr_val1_total = len(df.loc[(df[attr] == 1)])
     attr_total = len(df.index)
     # The entropy of the entire set
@@ -119,10 +133,11 @@ def information_gain(s, attr, df):
     entropy_attr_0 = get_entropy(attr, attr_val0_pos, attr_val0_neg, attr_val0_total)
     # The entropy of the subset that has "1" as a value for the attribute
     entropy_attr_1 = get_entropy(attr, attr_val1_pos, attr_val1_neg, attr_val1_total)
-    # Subtract from the set's entropy the entropy of each value multiplied by its proporition in the set
-    gain = entropy_s[1] - (attr_val0_total/attr_total) * entropy_attr_0[1] - (attr_val1_total/attr_total) * entropy_attr_1[1]
+    # Subtract from the set's entropy the entropy of each value multiplied by its proportion in the set
+    gain = entropy_s[1] - (attr_val0_total / attr_total) * entropy_attr_0[1] - (attr_val1_total / attr_total) * entropy_attr_1[1]
     # Return the label of the attribute and its gain
     return attr, gain
+
 
 # Evan's get_entropy
 def get_entropy(node_label, val1_instances, val0_instances, total):
@@ -142,12 +157,14 @@ def get_entropy(node_label, val1_instances, val0_instances, total):
         sys.exit()
     return node_label, entropy
 
+
 # This is the original get_entropy from Matt's commit
 def get_entropy_matt(node_label, positive_instances, negative_instances, total):
     """The formula for entropy is Entropy = -p_1 * log_2(p_1) - p_0 * log_2(p_0)"""
     entropy = (-1 * positive_instances/total * math.log2(positive_instances/total)) - \
               (negative_instances/total * math.log2(negative_instances/total))
     return node_label, entropy
+
 
 def get_attribute_labels(dataset):
     column_names = dataset.columns
@@ -176,6 +193,7 @@ def get_attribute_labels(dataset):
         total_instances_list.append(total)
 
     return attribute_labels_list, positive_instances_list, negative_instances_list, total_instances_list
+
 
 # examples_list     A pandas dataframe
 # target_attribute  The name of the target attribute (i.e. "Class")
@@ -213,6 +231,7 @@ def id3(examples_list, target_attribute, attributes_list):
                 root.insert(new_branch)
     return root
 
+
 #! Note: Variance Impurity Heuristics are based off Evan's work on the Node and Attribute Classes
 #! They will only work once we merge this code with his side branch
 # This function calculates the variance impurity of all attributes in attr_dict in comparison to the total set s
@@ -227,6 +246,7 @@ def variance_impurity_heuristic(s, attr_dict):
 
     # Return the label of the attribute with the highest gain from the list
     return max(gain_list, key=lambda item:item[1])[0]
+
 
 def variance_impurity_gain(s, attr):
     # Get the variance impurity of the entire set
@@ -244,6 +264,7 @@ def variance_impurity_gain(s, attr):
     # Return label and gain
     return attr.label, variance_gain
 
+
 # Variance Impurity = (K0/K)*(K1/K)
 def variance_impurity(node_label, val1_instances, val0_instances, total):
     # Calculate the variance impurity using the formula from the homework
@@ -251,7 +272,6 @@ def variance_impurity(node_label, val1_instances, val0_instances, total):
 
     # Return the impurity and the label
     return node_label, variance_impurity
-
 
 
 def standard_output_format():
@@ -279,6 +299,7 @@ def standard_output_format():
 def print_tree():
     return ''
 
+
 # Computes the number of non-leaf
 # nodes in a tree.
 def countNonleaf(root):
@@ -292,6 +313,7 @@ def countNonleaf(root):
     # its child is also not None
     return (1 + countNonleaf(root.left) +
                 countNonleaf(root.right))
+
 
 # Implementation of the Post Pruning Algorithm
 # Input: An integer L and an integer K
@@ -347,6 +369,7 @@ def post_pruning(L, K):
     # Return the pruned tree with the best accuracy
     return optimal_d
 
+
 # l = 1
 # k = 0
 training_set = 'data_sets2/data_sets2/training_set.csv'
@@ -365,5 +388,5 @@ micro_set = 'data_sets2/data_sets2/micro_set.csv'
 micro_df = pd.read_csv(micro_set)
 
 tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
-#tree = id3(micro_df, "Class", list(micro_df.columns[0:-1]))
+# tree = id3(micro_df, "Class", list(micro_df.columns[0:-1]))
 print(tree)
