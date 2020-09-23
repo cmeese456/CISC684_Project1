@@ -45,11 +45,11 @@ class Node:
     def __str__(self):
         return str(self.label)
 
-    def insert(self, label):
+    def insert(self, node):
         if self.left is None:
-            self.left = Node(label)
+            self.left = node
         elif self.right is None:
-            self.right = Node(label)
+            self.right = node
         else:
             sys.stderr.write('Error: Cannot insert. All branches at node are set.\n')
             sys.exit()
@@ -79,6 +79,16 @@ class Node:
 
         return str(self.label) """
 
+"""
+    def insert(self, label):
+        if self.left is None:
+            self.left = Node(label)
+        elif self.right is None:
+            self.right = Node(label)
+        else:
+            sys.stderr.write('Error: Cannot insert. All branches at node are set.\n')
+            sys.exit()
+"""
 
 def printy(node):
     if node:
@@ -87,7 +97,6 @@ def printy(node):
             printy(node.left)
         if node.right:
             printy(node.right)
-    return
 
 
 # Get the label (i.e. attribute name) with the highest information gain.
@@ -405,5 +414,23 @@ test_df = pd.read_csv(test_set)
 #micro_df = pd.read_csv(micro_set)
 
 tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
-# tree = id3(micro_df, "Class", list(micro_df.columns[0:-1]))
-print(tree)
+'''
+ntest = Node("root")
+ntest.insert("branch")
+ntest.insert("branch")
+ntest.left.insert("leaf")
+ntest.left.insert("leaf")
+ntest.right.insert("leaf")
+ntest.right.insert("leaf")
+'''
+'''
+mtest = Node()
+mtest.label = "root"
+branch = Node()
+branch.label = "branch"
+leaf = Node()
+leaf.label = "leaf"
+branch.insert(leaf)
+mtest.insert(branch)
+'''
+printy(tree)
