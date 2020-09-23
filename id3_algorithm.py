@@ -107,32 +107,54 @@ def information_gain_heuristic(s, attr_list, df):
 # class. In this version, s and attr are ONLY labels. Note that df (the Pandas
 # dataframe) is a new parameter.
 def information_gain(s, attr, df):
-    s_pos = len(df.loc[(df[s] == 1)])
-    s_neg = len(df.loc[(df[s] == 0)])
-    s_total = len(df.index)
+    s_pos = len(df.loc[(df[s] == 1)])   # Number of positive (i.e. Class=1) examples
+    s_neg = len(df.loc[(df[s] == 0)])   # Number of negative (i.e. Class=0) examples
+    s_total = len(df.index)             # Total number of examples
     attr_val0_pos = 0
     attr_val0_neg = 0
     attr_val1_pos = 0
     attr_val1_neg = 0
     for i in range(len(df[s])):
-        if df[s][i] == 1 and df[attr][i] == 0:
-            attr_val0_pos += 1
-        elif df[s][i] == 0 and df[attr][i] == 0:
-            attr_val0_neg += 1
-        elif df[s][i] == 1 and df[attr][i] == 1:
-            attr_val1_pos += 1
-        elif df[s][i] == 0 and df[attr][i] == 1:
-            attr_val1_neg += 1
-
+        try:
+            #if df[s][i] == 1 and df[attr][i] == 0:
+            if df.iloc[i].loc[s] == 1 and df.iloc[i].loc[attr] == 0:
+                attr_val0_pos += 1
+            #elif df[s][i] == 0 and df[attr][i] == 0:
+            elif df.iloc[i].loc[s] == 0 and df.iloc[i].loc[attr] == 0:
+                attr_val0_neg += 1
+            #elif df[s][i] == 1 and df[attr][i] == 1:
+            elif df.iloc[i].loc[s] == 1 and df.iloc[i].loc[attr] == 1:
+                attr_val1_pos += 1
+            #elif df[s][i] == 0 and df[attr][i] == 1:
+            elif df.iloc[i].loc[s] == 0 and df.iloc[i].loc[attr] == 1:
+                attr_val1_neg += 1
+        except KeyError as e:
+            print(attr)
+            print(i)
+            print(df.iloc[i].loc[s])
+            #print(df.iloc[i].loc[attr])
+            print(df.iloc[i])
+            print(df)
+            sys.exit()
     attr_val0_total = len(df.loc[(df[attr] == 0)])
     attr_val1_total = len(df.loc[(df[attr] == 1)])
     attr_total = len(df.index)
     # The entropy of the entire set
     entropy_s = get_entropy(s, s_pos, s_neg, s_total)
     # The entropy of the subset that has "0" as a value for the attribute
-    entropy_attr_0 = get_entropy(attr, attr_val0_pos, attr_val0_neg, attr_val0_total)
+    try:
+        entropy_attr_0 = get_entropy(attr, attr_val0_pos, attr_val0_neg, attr_val0_total)
+    except ZeroDivisionError:
+        print(attr)
+        print(df)
+        sys.exit()
     # The entropy of the subset that has "1" as a value for the attribute
-    entropy_attr_1 = get_entropy(attr, attr_val1_pos, attr_val1_neg, attr_val1_total)
+    try:
+        entropy_attr_1 = get_entropy(attr, attr_val1_pos, attr_val1_neg, attr_val1_total)
+    except ZeroDivisionError:
+        print(attr)
+        print(df)
+        sys.exit()
     # Subtract from the set's entropy the entropy of each value multiplied by its proportion in the set
     gain = entropy_s[1] - (attr_val0_total / attr_total) * entropy_attr_0[1] - (attr_val1_total / attr_total) * entropy_attr_1[1]
     # Return the label of the attribute and its gain
@@ -143,18 +165,13 @@ def information_gain(s, attr, df):
 def get_entropy(node_label, val1_instances, val0_instances, total):
     """The formula for entropy is Entropy = -p_1 * log_2(p_1) - p_0 * log_2(p_0)"""
     """As per Mitchell p. 56, 0 log 0 is defined as zero """
-    try:
+    # If there are no more examples with this value for this attribute, Return
+    # entropy = 0. This avoids a divide by zero error.
+    if (total == 0):
+        entropy = 0
+    else:
         entropy = (-1 * val1_instances/total * math.log2(val1_instances/total if val1_instances/total > 0 else 1)) - \
-                  (val0_instances/total * math.log2(val0_instances/total if val0_instances/total > 0 else 1))
-    # I'm getting an error where I have more attributes set to 0 or 1 than I
-    # have total rows.
-    except ZeroDivisionError as e:
-        print("val1_instances: " + str(val1_instances))
-        print("val0_instances: " + str(val0_instances))
-        print("total: " + str(total))
-        print("node: " + node_label)
-        print(e)
-        sys.exit()
+              (val0_instances/total * math.log2(val0_instances/total if val0_instances/total > 0 else 1))
     return node_label, entropy
 
 
@@ -384,8 +401,8 @@ train_df = pd.read_csv(training_set)
 validation_df = pd.read_csv(validation_set)
 test_df = pd.read_csv(test_set)
 
-micro_set = 'data_sets2/data_sets2/micro_set.csv'
-micro_df = pd.read_csv(micro_set)
+#micro_set = 'data_sets2/data_sets2/micro_set.csv'
+#micro_df = pd.read_csv(micro_set)
 
 tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
 # tree = id3(micro_df, "Class", list(micro_df.columns[0:-1]))
