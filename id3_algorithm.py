@@ -53,7 +53,7 @@ class Node:
         else:
             sys.stderr.write('Error: Cannot insert. All branches at node are set.\n')
             sys.exit()
-
+'''
     def printout(self, node):
         tree = ''
         if node:
@@ -63,53 +63,20 @@ class Node:
             if (self.right):
                 tree += self.printout(node.right)
         return tree
-
-    # Commenting this because it caused an error since method is defined above
-    # This is from Evan's fork
-    """ def __str__(self, offset=''):
-         TODO: Get this working properly.
-        #print(offset + str(self.label))
-        #print(self.label)
-        if self.left:
-            #offset = offset + "-"
-            print(self.left, offset)
-        elif self.right:
-            #offset = offset + "-"
-            print(self.right, offset)
-
-        return str(self.label) """
-
-"""
-    def insert(self, label):
-        if self.left is None:
-            self.left = Node(label)
-        elif self.right is None:
-            self.right = Node(label)
-        else:
-            sys.stderr.write('Error: Cannot insert. All branches at node are set.\n')
-            sys.exit()
-"""
-
-def printy(node):
+'''
+def printy(node, depth=0):
+    prefix = "| " * depth
     if node:
         if (node.left.left.left or node.left.left.right):
-            print(node.label + " = " + str(node.left.label) + " : ")
-            printy(node.left.left)
+            print(prefix + node.label + " = " + str(node.left.label) + " : ")
+            printy(node.left.left, depth+1)
         else:
-            print(node.label + " = " + str(node.left.label) + " : " + str(node.left.left.label))
+            print(prefix + node.label + " = " + str(node.left.label) + " : " + str(node.left.left.label))
         if (node.right.left.left or node.right.left.right):
-            print(node.label + " = " + str(node.right.label) + " : ")
-            printy(node.right.left)
+            print(prefix + node.label + " = " + str(node.right.label) + " : ")
+            printy(node.right.left, depth+1)
         else:
-            print(node.label + " = " + str(node.right.label) + " : " + str(node.right.left.label))
-        #if node.right:
-        '''
-        if (node.right.left and node.right.right):
-            printy(node.right)
-            print(node.label + " = " + str(node.right.label) + " : ")
-        else:
-            print(node.label + " = " + str(node.right.label) + " : " + str(node.right.left.label))
-        '''
+            print(prefix + node.label + " = " + str(node.right.label) + " : " + str(node.right.left.label))
     return
 
 
@@ -451,30 +418,11 @@ test_df = pd.read_csv(test_set)
 micro_set = 'data_sets2/data_sets2/micro_set.csv'
 micro_df = pd.read_csv(micro_set)
 
-tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
+micro2 = 'data_sets2/data_sets2/micro2.csv'
+micro2_df = pd.read_csv(micro2)
+
+#tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
 #tree = id3(micro_df, "Class", list(micro_df.columns[0:-1]))
+tree = id3(micro2_df, "Class", list(micro2_df.columns[0:-1]))
 
-
-wesley = Node()
-wesley.label = "wesley"
-honor = Node()
-honor.label = "honor"
-barclay = Node()
-barclay.label = "barclay"
-tea = Node()
-tea.label = "tea"
-zero = Node()
-zero.label = "0"
-one = Node()
-one.label = "1"
-
-wesley.insert(zero)
-wesley.insert(one)
-wesley.left.insert(honor)
-wesley.right.insert(zero)
-
-tea.insert(one)
-tea.insert(zero)
-
-#printy(wesley)
 printy(tree)
