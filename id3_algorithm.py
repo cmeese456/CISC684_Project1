@@ -92,11 +92,25 @@ class Node:
 
 def printy(node):
     if node:
-        print(node)
-        if node.left:
-            printy(node.left)
-        if node.right:
+        if (node.left.left.left or node.left.left.right):
+            print(node.label + " = " + str(node.left.label) + " : ")
+            printy(node.left.left)
+        else:
+            print(node.label + " = " + str(node.left.label) + " : " + str(node.left.left.label))
+        if (node.right.left.left or node.right.left.right):
+            print(node.label + " = " + str(node.right.label) + " : ")
+            printy(node.right.left)
+        else:
+            print(node.label + " = " + str(node.right.label) + " : " + str(node.right.left.label))
+        #if node.right:
+        '''
+        if (node.right.left and node.right.right):
             printy(node.right)
+            print(node.label + " = " + str(node.right.label) + " : ")
+        else:
+            print(node.label + " = " + str(node.right.label) + " : " + str(node.right.left.label))
+        '''
+    return
 
 
 # Get the label (i.e. attribute name) with the highest information gain.
@@ -242,6 +256,14 @@ def id3(examples_list, target_attribute, attributes_list):
         A = information_gain_heuristic(target_attribute, attributes_list, examples_list)
         root.label = A
         for i in [0,1]:
+            # The code below creates a node in-between a parent node and its
+            # child. The sole purpose of this in-between node is to bear a label
+            # reflecting whether the parent node's value was 0 or 1 for the
+            # child branch. BUT that information is already conveyed by the
+            # order in which nodes are inserted. The first insertion goes to the
+            # left and signifies a "0" value for the parent node. The second
+            # goes on the right and signifies a "1" value for the parent node.
+            # So this in-between node is redundant.
             new_branch = Node()
             new_branch.label = str(i)
             examples_list_vi = examples_list.loc[examples_list[A] == i]
@@ -255,6 +277,22 @@ def id3(examples_list, target_attribute, attributes_list):
                 trimmed_attributes.remove(A)
                 new_branch.insert(id3(examples_list_vi,target_attribute,trimmed_attributes))
                 root.insert(new_branch)
+            # This code does away with separate "in-between" nodes. The
+            # attribute value that leads from a parent to its child is
+            # represented by which side the child is inserted on. Left nodes
+            # (inserted first) represent a "0" value. Right nodes represent
+            # a "1" value.
+            '''
+            examples_list_vi = examples_list.loc[examples_list[A] == i]
+            if (examples_list_vi.empty):
+                new_leaf = Node()
+                new_leaf.label = examples_list[target_attribute].mode()[0]
+                root.insert(new_leaf)
+            else:
+                trimmed_attributes = copy.deepcopy(attributes_list)
+                trimmed_attributes.remove(A)
+                root.insert(id3(examples_list_vi,target_attribute,trimmed_attributes))
+                '''
     return root
 
 
@@ -410,27 +448,33 @@ train_df = pd.read_csv(training_set)
 validation_df = pd.read_csv(validation_set)
 test_df = pd.read_csv(test_set)
 
-#micro_set = 'data_sets2/data_sets2/micro_set.csv'
-#micro_df = pd.read_csv(micro_set)
+micro_set = 'data_sets2/data_sets2/micro_set.csv'
+micro_df = pd.read_csv(micro_set)
 
 tree = id3(train_df, "Class", list(train_df.columns[0:-1]))
-'''
-ntest = Node("root")
-ntest.insert("branch")
-ntest.insert("branch")
-ntest.left.insert("leaf")
-ntest.left.insert("leaf")
-ntest.right.insert("leaf")
-ntest.right.insert("leaf")
-'''
-'''
-mtest = Node()
-mtest.label = "root"
-branch = Node()
-branch.label = "branch"
-leaf = Node()
-leaf.label = "leaf"
-branch.insert(leaf)
-mtest.insert(branch)
-'''
+#tree = id3(micro_df, "Class", list(micro_df.columns[0:-1]))
+
+
+wesley = Node()
+wesley.label = "wesley"
+honor = Node()
+honor.label = "honor"
+barclay = Node()
+barclay.label = "barclay"
+tea = Node()
+tea.label = "tea"
+zero = Node()
+zero.label = "0"
+one = Node()
+one.label = "1"
+
+wesley.insert(zero)
+wesley.insert(one)
+wesley.left.insert(honor)
+wesley.right.insert(zero)
+
+tea.insert(one)
+tea.insert(zero)
+
+#printy(wesley)
 printy(tree)
