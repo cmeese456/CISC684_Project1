@@ -1,4 +1,5 @@
 import sys
+import pandas as pd
 from CISC684_Project1.id3_algorithm import *
 from CISC684_Project1.accuracy import measure_accuracy
 
@@ -10,6 +11,11 @@ from CISC684_Project1.accuracy import measure_accuracy
 # test_set = sys.argv[4]
 # to_print = sys.argv[5]
 
+# if len(sys.argv) != 6:
+#     print('Incorrect Usage! Please enter six arguments: <L>, <K>, <training-set>, <validation-set>, <test-set>, '
+#           '<to-print>')
+#     sys.exit(2)
+
 l = 1
 k = 0
 training_set = 'data_sets2/data_sets2/training_set.csv'
@@ -17,7 +23,7 @@ validation_set = 'data_sets2/data_sets2/validation_set.csv'
 test_set = 'data_sets2/data_sets2/test_set.csv'
 to_print = 'yes'
 
-# check that l and k are integers
+# check that l and k are integers, if not exit the program
 if type(l) is not int:
     sys.stderr.write('L is not an integer. Please restart the program with L as an integer')
     sys.exit()
@@ -38,17 +44,17 @@ tree = id3(train_df, 'Class', list(train_df.columns[0:-1]))
 # prune_entropy_tree = post_pruning(l, k, tree)
 
 # create a tree for variance impurity by first performing the ID3 algorithm
-vi_tree = id3(train_df, 'Class', list(train_df.columns[0:-1]))
+# vi_tree = id3(train_df, 'Class', list(train_df.columns[0:-1]))
 
 # perform post-pruning on the variance impurity tree
 # prune_vi_tree = post_pruning(l, k, tree)
 
 if to_print == 'yes':
     print('Printing Decision Tree')
-    standard_output_format(tree)
+    printy(tree)
     # print('Printing Pruned Decision Tree')
     # standard_output_format(prune_tree)
-    print('Accuracy of Decision Tree pre-pruning: ', measure_accuracy(test_df, tree))
+    print('Accuracy of Decision Tree pre-pruning: ' + str(measure_accuracy(train_df, tree)) + '%')
     # print('Accuracy of Entropy Decision Tree post-pruning: ', measure_accuracy(test_df, prune_entropy_tree))
     # print('Printing Variance Impurity Tree pre-pruning')
     # standard_output_format(vi_tree)

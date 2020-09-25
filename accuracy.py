@@ -1,5 +1,4 @@
 from CISC684_Project1.tree_traversal import tree_traversal
-import pandas as pd
 
 
 def measure_accuracy(data, dt):
@@ -10,9 +9,10 @@ def measure_accuracy(data, dt):
     result_in_tree = []
 
     for i, row in x.iterrows():
-        traversal_result = tree_traversal(dt, row)
+        traversal_result = tree_traversal(dt)
         result_in_tree.append(traversal_result)
-        if result_in_tree == data['Class'][i]:
+        dataset_result = data['Class'][i]
+        if int(traversal_result) == dataset_result:
             count += 1
 
     # calculate tree accuracy as a percentage
