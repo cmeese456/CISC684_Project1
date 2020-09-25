@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
-from CISC684_Project1.id3_algorithm import *
-from CISC684_Project1.accuracy import measure_accuracy
+from id3_algorithm import *
+from accuracy import measure_accuracy
 
 # get command line arguments ************ UNCOMMENT AFTER FINISHED DEVELOPING *********
 # l = sys.argv[0]
@@ -38,7 +38,12 @@ validation_df = pd.read_csv(validation_set)
 test_df = pd.read_csv(test_set)
 
 # create a tree by first performing the ID3 algorithm
-tree = id3(train_df, 'Class', list(train_df.columns[0:-1]))
+# this tree is built using ID3 with Information Gain Heuristic
+tree_information_gain = id3(train_df, 'Class', list(train_df.columns[0:-1]))
+
+# Create a second tree by first performing the ID3 algorithm
+# this tree is built using ID3 with the Variance Impurity heuristic
+vi_tree = id3_variance_impurity(train_df, 'Class', list(train_df.columns[0:-1]))
 
 # perform post-pruning on the tree
 # prune_entropy_tree = post_pruning(l, k, tree)
@@ -50,15 +55,16 @@ tree = id3(train_df, 'Class', list(train_df.columns[0:-1]))
 # prune_vi_tree = post_pruning(l, k, tree)
 
 if to_print == 'yes':
-    print('Printing Decision Tree')
-    printy(tree)
+    print('Printing Info Gain Decision Tree')
+    printy(tree_information_gain)
     # print('Printing Pruned Decision Tree')
     # standard_output_format(prune_tree)
-    print('Accuracy of Decision Tree pre-pruning: ' + str(measure_accuracy(train_df, tree)) + '%')
+    print('Accuracy of Info Gain Decision Tree pre-pruning: ' + str(measure_accuracy(train_df, tree_information_gain)) + '%')
     # print('Accuracy of Entropy Decision Tree post-pruning: ', measure_accuracy(test_df, prune_entropy_tree))
-    # print('Printing Variance Impurity Tree pre-pruning')
+    print('Printing Variance Impurity Tree pre-pruning')
+    printy(vi_tree)
+    print('Accuracy of Variance Impurity Decision Tree pre-pruning: ' + str(measure_accuracy(train_df, vi_tree)) + '%')
     # standard_output_format(vi_tree)
     # print('Printing Variance Impurity Tree post-pruning')
     # standard_output_format(prune_vi_tree)
     # print('Accuracy of Variance Impurity Decision Tree:', measure_accuracy(test_df, prune_vi_tree))
-
