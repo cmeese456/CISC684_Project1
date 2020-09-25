@@ -259,7 +259,7 @@ def variance_impurity_gain(s, attr, df):
     # Subtract from the set's variance the variance of each value multiplied by its proportion in the set
     gain = variance_s[1] - (attr_val0_total / attr_total) * variance_attr_0[1] - (attr_val1_total / attr_total) * \
         variance_attr_1[1]
-    
+
     # Return the label of the attribute and its gain
     return attr, gain
 
