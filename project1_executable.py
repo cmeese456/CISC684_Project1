@@ -68,4 +68,3 @@ if to_print == 'yes':
     # print('Printing Variance Impurity Tree post-pruning')
     # standard_output_format(prune_vi_tree)
     # print('Accuracy of Variance Impurity Decision Tree:', measure_accuracy(test_df, prune_vi_tree))
-

@@ -343,14 +343,28 @@ def count_non_leaf(root):
     # its child is also not None
     return 1 + count_non_leaf(root.left) + count_non_leaf(root.right)
 
+# Builds a list ordering the nodes in the decision tree
+def build_preorder(root, p, node_list):
+
+    # Base case to check if we are at a leaf
+    if root is None or (root.left is None and root.right is None):
+        return node_list
+
+    # Otherwise Append the left and right nodes to the list
+    node_list.append(root.left)
+    node_list.append(root.right)
+    build_preorder(root.left, p, node_list)
+    build_preorder(root.right, p, node_list)
+
+    # If the list is of size p, we have all the nodes
+    if len(node_list) == p:
+        return node_list
+
 
 # Implementation of the Post Pruning Algorithm
 # Input: A decision tree DT, an integer L and an integer K
 # Return: Post-pruned decision tree
 def post_pruning(dt, L, K):
-    # Build a decision tree using all the training data
-    # ? This will most likely need to be done using ID3 which is on Evan's Branch
-    # ! Reminder to update this once we merge Evan's fork with our main codebase, commented for now
 
     # Optimal Decision Tree variable is initially set to the unpruned tree
     optimal_d = dt
@@ -358,7 +372,7 @@ def post_pruning(dt, L, K):
     # Begin pruning with a Loop from 1 to L
     for x in [1, L]:
         # Copy the current most optimal tree into a new tree d_prime
-        d_prime = optimal_d
+        d_prime = copy.deepcopy(optimal_d)
 
         # Select a random number M between 1 and K
         # random.randrange(start, stop, step)
@@ -369,12 +383,16 @@ def post_pruning(dt, L, K):
             # Let n denote the number of non-leaf nodes in the decision tree d_prime
             n = count_non_leaf(d_prime)
 
-            # Order the nodes in d_prime from 1 to n
-            # ! Reminder to implement
-            node_list = ""
+            # Determine p based on the number of non-leaf nodes
+            if n > 0:
+                p = random.randrange(1, n, 1)
 
-            # Select a random number between 1 and n, assign it to p
-            p = random.randrange(1, n, 1)
+            else:
+                p = 0
+
+            # Order the nodes in d_prime from 1 to n
+            # Traverse the tree and build the node list
+            node_list = ""
 
             # Replace the subtree rooted at P in d_prime with a leaf node.
             # Assign the leaf node the value of the majority class
