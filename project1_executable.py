@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
-from CISC684_Project1.id3_algorithm import *
-from CISC684_Project1.accuracy import measure_accuracy
+from id3_algorithm import *
+from accuracy import measure_accuracy
 
 # get command line arguments ************ UNCOMMENT AFTER FINISHED DEVELOPING *********
 # l = sys.argv[0]

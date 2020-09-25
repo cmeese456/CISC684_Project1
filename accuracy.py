@@ -1,4 +1,4 @@
-from CISC684_Project1.tree_traversal import tree_traversal
+from tree_traversal import tree_traversal
 
 
 def measure_accuracy(data, dt):

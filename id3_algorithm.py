@@ -1,7 +1,8 @@
 import math
 import copy
 import random
-from CISC684_Project1.tree import *
+import sys
+from tree import *
 
 """This file is for implementing the ID3 decision tree learning algorithm. As discussed in class,
 the main step in decision tree learning is choosing the next attribute to split on. Implement the
