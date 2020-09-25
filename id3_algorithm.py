@@ -187,10 +187,7 @@ def id3(examples_list, target_attribute, attributes_list):
     return root
 
 
-# ! Note: Variance Impurity Heuristics are based off Evan's work on the Node and Attribute Classes
-# ! They will only work once we merge this code with his side branch
-# This function calculates the variance impurity of all attributes in attr_dict in comparison to the total set s
-# ! Important: attr_dict must only contain attributes to be tested, prune the input based on tree level before calling
+# This function performs the variance impurity calculation across all attributes.
 def variance_impurity_heuristic(s, attr_list, df):
     # Keep a list of the variance gain of each attribute
     gain_list = []
@@ -257,16 +254,19 @@ def variance_impurity_gain(s, attr, df):
         sys.exit()
 
     # Subtract from the set's variance the variance of each value multiplied by its proportion in the set
-    gain = variance_s[1] - (attr_val0_total / attr_total) * variance_attr_0[1] - (attr_val1_total / attr_total) * \
-        variance_attr_1[1]
+    gain = variance_s[1] - ((attr_val0_total / attr_total) * variance_attr_0[1]) - ((attr_val1_total / attr_total) * \
+        variance_attr_1[1])
 
     # Return the label of the attribute and its gain
     return attr, gain
 
 # Variance Impurity = (K0/K)*(K1/K)
 def variance_impurity(node_label, val1_instances, val0_instances, total):
-    # Calculate the variance impurity using the formula from the homework
-    variance_impurity = (val1_instances / total) * (val0_instances / total)
+    if total == 0:
+        variance_impurity = 0
+    else:
+        # Calculate the variance impurity using the formula from the homework
+        variance_impurity = (val1_instances / total) * (val0_instances / total)
 
     # Return the impurity and the label
     return node_label, variance_impurity
