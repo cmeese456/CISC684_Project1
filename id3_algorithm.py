@@ -266,7 +266,7 @@ def variance_impurity(node_label, val1_instances, val0_instances, total):
         variance_impurity = 0
     else:
         # Calculate the variance impurity using the formula from the homework
-        variance_impurity = (val1_instances / total) * (val0_instances / total)
+        variance_impurity = (val0_instances / total) * (val1_instances / total)
 
     # Return the impurity and the label
     return node_label, variance_impurity
@@ -312,7 +312,7 @@ def id3_variance_impurity(examples_list, target_attribute, attributes_list):
             else:
                 trimmed_attributes = copy.deepcopy(attributes_list)
                 trimmed_attributes.remove(A)
-                new_branch.insert(id3(examples_list_vi, target_attribute, trimmed_attributes))
+                new_branch.insert(id3_variance_impurity(examples_list_vi, target_attribute, trimmed_attributes))
                 root.insert(new_branch)
             # This code does away with separate "in-between" nodes. The
             # attribute value that leads from a parent to its child is
@@ -328,7 +328,7 @@ def id3_variance_impurity(examples_list, target_attribute, attributes_list):
             else:
                 trimmed_attributes = copy.deepcopy(attributes_list)
                 trimmed_attributes.remove(A)
-                root.insert(id3(examples_list_vi,target_attribute,trimmed_attributes))
+                root.insert(id3_variance_impurity(examples_list_vi,target_attribute,trimmed_attributes))
                 '''
     return root
 
