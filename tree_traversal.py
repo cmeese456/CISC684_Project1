@@ -1,3 +1,4 @@
+import sys
 def tree_traversal(dt, row):
     '''
     Follow a row of a test or validation set through a decision tree and
