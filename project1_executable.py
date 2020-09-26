@@ -41,6 +41,7 @@ test_df = pd.read_csv(test_set)
 # this tree is built using ID3 with Information Gain Heuristic
 
 tree_information_gain = id3(train_df, 'Class', list(train_df.columns[0:-1]))
+vi_tree = id3_variance_impurity(train_df, 'Class', list(train_df.columns[0:-1]))
 
 # Create a second tree by first performing the ID3 algorithm
 # this tree is built using ID3 with the Variance Impurity heuristic
