@@ -266,7 +266,7 @@ def variance_impurity(node_label, val1_instances, val0_instances, total):
         variance_impurity = 0
     else:
         # Calculate the variance impurity using the formula from the homework
-        variance_impurity = (val1_instances / total) * (val0_instances / total)
+        variance_impurity = (val0_instances / total) * (val1_instances / total)
 
     # Return the impurity and the label
     return node_label, variance_impurity
@@ -312,7 +312,7 @@ def id3_variance_impurity(examples_list, target_attribute, attributes_list):
             else:
                 trimmed_attributes = copy.deepcopy(attributes_list)
                 trimmed_attributes.remove(A)
-                new_branch.insert(id3(examples_list_vi, target_attribute, trimmed_attributes))
+                new_branch.insert(id3_variance_impurity(examples_list_vi, target_attribute, trimmed_attributes))
                 root.insert(new_branch)
             # This code does away with separate "in-between" nodes. The
             # attribute value that leads from a parent to its child is
@@ -328,7 +328,7 @@ def id3_variance_impurity(examples_list, target_attribute, attributes_list):
             else:
                 trimmed_attributes = copy.deepcopy(attributes_list)
                 trimmed_attributes.remove(A)
-                root.insert(id3(examples_list_vi,target_attribute,trimmed_attributes))
+                root.insert(id3_variance_impurity(examples_list_vi,target_attribute,trimmed_attributes))
                 '''
     return root
 
@@ -346,20 +346,12 @@ def count_non_leaf(root):
 # Builds a list ordering the nodes in the decision tree
 def build_preorder(root, p, node_list):
 
-    # Base case to check if we are at a leaf
-    if root is None or (root.left is None and root.right is None):
-        return node_list
+    # Base cases
 
-    # Otherwise Append the left and right nodes to the list
-    node_list.append(root.left)
-    node_list.append(root.right)
-    build_preorder(root.left, p, node_list)
-    build_preorder(root.right, p, node_list)
+    # Recursively loop through the decision tree and add each non-leaf node to the list
 
-    # If the list is of size p, we have all the nodes
-    if len(node_list) == p:
-        return node_list
-
+    # Break when the list is of length p and return the list
+    return node_list
 
 # Implementation of the Post Pruning Algorithm
 # Input: A decision tree DT, an integer L and an integer K
@@ -391,13 +383,16 @@ def post_pruning(dt, L, K):
                 p = 0
 
             # Order the nodes in d_prime from 1 to n
-            # Traverse the tree and build the node list
-            node_list = ""
+            # Create an empty note list and append the root
+            node_list = []
+            node_list.append(d_prime)
+
+            # Call build_preorder and build the node list
+            build_preorder(d_prime, p, node_list)
 
             # Replace the subtree rooted at P in d_prime with a leaf node.
             # Assign the leaf node the value of the majority class
             # ! Reminder to implement
-            """ Not sure exactly how to implement this. Need a better understanding of Evan's Tree Code """
 
         # End inner loop and evaluate the accuracy of d_prime on the validation set
         # First check the accuracy of our current optimal tree
