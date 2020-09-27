@@ -10,6 +10,11 @@ def post_pruning(L,K,tree,validation):
     be replaced. validation is a pandas dataframe of the validation set.
     '''
     best_tree = tree
+    # Note: It is very possible the input tree will be less accurate on the
+    # validation set than it was on the training set. It is also possible that
+    # the most accurate tree_edit (pruned on the validation set) will be less
+    # accurate than the original input tree when measured against the final
+    # test set.
     best_accuracy = measure_accuracy(validation, best_tree)
     random.seed(0)  # To ensure test results can be repeated, seed random with a constant value.
     for i in range(0,L):
@@ -22,7 +27,6 @@ def post_pruning(L,K,tree,validation):
             nonleafs = []
             nonleafs = get_nonleafs(tree_edit)
             N = len(nonleafs)
-            #P = random.randint(1,N)
             P = random.randint(0,N-1)
             replace_subtree = nonleafs[P]
             leaf_value = get_majority_class(replace_subtree)

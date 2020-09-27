@@ -1,5 +1,5 @@
 import sys
-def tree_traversal(dt, row):
+def tree_traversal(dt, row, traversal_return=None):
     '''
     Follow a row of a test or validation set through a decision tree and
     return a leaf.
@@ -8,7 +8,7 @@ def tree_traversal(dt, row):
     dt      a decision tree Node
     row     a dict mapping column names to values for a given row in a dataframe
     '''
-    traversal_return = None
+
     if dt.left or dt.right:
         follow_attribute = dt.label
         if int(row[follow_attribute]) == 0:

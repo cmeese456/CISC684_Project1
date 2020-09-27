@@ -21,13 +21,3 @@ class Node:
         else:
             sys.stderr.write('Error: Cannot insert. All branches at node are set.\n')
             sys.exit()
-
-    def printout(self, node):
-        tree_ = ''
-        if node:
-            tree_ += str(node.label)
-            if self.left:
-                tree_ += self.printout(node.left)
-            if self.right:
-                tree_ += self.printout(node.right)
-        return tree_
