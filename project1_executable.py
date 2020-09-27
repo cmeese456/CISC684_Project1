@@ -17,8 +17,8 @@ from post_prune import *
 #           '<to-print>')
 #     sys.exit(2)
 
-l = 1
-k = 1
+l = 4
+k = 3
 training_set = 'data_sets2/data_sets2/training_set.csv'
 validation_set = 'data_sets2/data_sets2/validation_set.csv'
 test_set = 'data_sets2/data_sets2/test_set.csv'
@@ -64,8 +64,6 @@ if to_print == 'yes':
     print('Printing Variance Impurity Tree pre-pruning')
     printy(vi_tree)
     print('Accuracy of Variance Impurity Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, vi_tree)) + '%')
-
-    print('Printing Variance Impurity Tree post-pruning')
     print('Accuracy of Information Gain Tree post-pruning:', measure_accuracy(test_df, prune_info_gain_tree))
     print('Accuracy of Variance Impurity Tree post-pruning:', measure_accuracy(test_df, prune_vi_tree))
 

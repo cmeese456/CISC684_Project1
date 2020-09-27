@@ -1,4 +1,6 @@
 import random
+import copy
+from tree import Node
 from accuracy import measure_accuracy
 
 def post_pruning(L,K,tree,validation):
@@ -9,17 +11,17 @@ def post_pruning(L,K,tree,validation):
     '''
     best_tree = tree
     best_accuracy = measure_accuracy(validation, best_tree)
-    for i in range(1,L):
-        tree_edit = tree # Do I need a deepcopy here?
+    for i in range(1,L,1):
+        tree_edit = copy.deepcopy(tree) # Do I need a deepcopy here?
         M = random.randint(1,K)
-        for i in range(1,M):
+        for i in range(1,M,1):
             # Get a list of all non-leaf nodes in tree_edit. Pick one of these
             # nodes at random and replace it with the most common value among
             # its leafs.
             nonleafs = []
             nonleafs = get_nonleafs(tree_edit)
             N = len(nonleafs)
-            P = random.randint(1,N)
+            P = random.randint(1,N-1)
             replace_subtree = nonleafs[P]
             leaf_value = get_majority_class(replace_subtree)
             replace_subtree.label = leaf_value
@@ -27,8 +29,8 @@ def post_pruning(L,K,tree,validation):
             replace_subtree.right = None
         current_edit_accuracy = measure_accuracy(validation, tree_edit)
         if (current_edit_accuracy > best_accuracy):
-            best_tree = tree_edit
-            best_accuracy = current_edit_accuracy
+            best_tree = copy.deepcopy(tree_edit)
+            best_accuracy = copy.deepcopy(current_edit_accuracy)
     return best_tree
 
 def get_nonleafs(tree,nonleafs=[]):
