@@ -26,7 +26,7 @@ def post_pruning(L,K,tree,validation):
             replace_subtree.left = None
             replace_subtree.right = None
         current_edit_accuracy = measure_accuracy(validation, tree_edit)
-        if (current_edit_accuracy > prev_best_accuracy):
+        if (current_edit_accuracy > best_accuracy):
             best_tree = tree_edit
             best_accuracy = current_edit_accuracy
     return best_tree

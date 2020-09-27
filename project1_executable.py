@@ -17,8 +17,8 @@ from post_prune import *
 #           '<to-print>')
 #     sys.exit(2)
 
-l = 2
-k = 2
+l = 1
+k = 1
 training_set = 'data_sets2/data_sets2/training_set.csv'
 validation_set = 'data_sets2/data_sets2/validation_set.csv'
 test_set = 'data_sets2/data_sets2/test_set.csv'
