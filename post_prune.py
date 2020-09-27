@@ -22,7 +22,7 @@ def post_pruning(L,K,tree,validation):
             P = random.randint(1,N)
             replace_subtree = nonleafs[P]
             leaf_value = get_majority_class(replace_subtree)
-            replace_subtree.label = leaf_value.label
+            replace_subtree.label = leaf_value
             replace_subtree.left = None
             replace_subtree.right = None
         current_edit_accuracy = measure_accuracy(validation, tree_edit)
