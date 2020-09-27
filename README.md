@@ -23,8 +23,7 @@ There are two ways to run this code:
 
 -  An example run command is the following:
     
-    `python3 project1_executable.py 3 4 data_sets1/data_sets1/training_set.csv data
-_sets1/data_sets1/test_set.csv data_sets1/data_sets1/validation_set.csv yes`
+    `python3 project1_executable.py 3 4 data_sets1/data_sets1/training_set.csv data_sets1/data_sets1/test_set.csv data_sets1/data_sets1/validation_set.csv yes`
 
 where:
 - L = 3
