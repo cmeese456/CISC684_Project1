@@ -58,13 +58,16 @@ if to_print == 'yes':
     print('Printing Information Gain Tree post-pruning')
     print_output(prune_info_gain_tree)
     print()
-    print('{0:8s}      {1:20s}        {2:20s}'.format('Params','Pre-Prune Accuracy','Post-Prune Accuracy'))
-    print('{0:4s}  {1:4s}    {2:10s}  {3:10s}      {2:10s}  {3:10s}'.format('L','K','VarImp','InfoGain'))
+    print('{0:8s}      {1:20s}        {2:20s}'.format('Params', 'Pre-Prune Accuracy', 'Post-Prune Accuracy'))
+    print('{0:4s}  {1:4s}    {2:10s}  {3:10s}      {2:10s}  {3:10s}'.format('L', 'K', 'VarImp', 'InfoGain'))
 
-print('{0:<4d}  {1:<4d}    {2:<9.4f}%  {3:<9.4f}%      {4:<9.4f}%  {5:<9.4f}%'.format(l,k,vi_preprune_accur,info_gain_preprune_accur,vi_postprune_accur,info_gain_postprune_accur))
+print('{0:<4d}  {1:<4d}    {2:<9.4f}%  {3:<9.4f}%      {4:<9.4f}%  {5:<9.4f}%'.format(l, k, vi_preprune_accur,
+                                                                                      info_gain_preprune_accur,
+                                                                                      vi_postprune_accur,
+                                                                                      info_gain_postprune_accur))
 
-#print('Accuracy of Info Gain Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, info_gain_tree)) + '%')
-#print('Accuracy of Variance Impurity Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, vi_tree)) + '%')
-#print('L = ' + str(l) + ", K = " + str(k))
-#print('Accuracy of Information Gain Tree post-pruning:', str(measure_accuracy(test_df, prune_info_gain_tree)) + '%')
-#print('Accuracy of Variance Impurity Tree post-pruning:', str(measure_accuracy(test_df, prune_vi_tree)) + '%')
+# print('Accuracy of Info Gain Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, info_gain_tree)) + '%')
+# print('Accuracy of Variance Impurity Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, vi_tree)) + '%')
+# print('L = ' + str(l) + ", K = " + str(k))
+# print('Accuracy of Information Gain Tree post-pruning:', str(measure_accuracy(test_df, prune_info_gain_tree)) + '%')
+# print('Accuracy of Variance Impurity Tree post-pruning:', str(measure_accuracy(test_df, prune_vi_tree)) + '%')
