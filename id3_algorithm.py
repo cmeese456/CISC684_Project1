@@ -66,23 +66,18 @@ def information_gain(s, attr, df):
     attr_val1_neg = 0
     for i in range(len(df[s])):
         try:
-            # if df[s][i] == 1 and df[attr][i] == 0:
             if df.iloc[i].loc[s] == 1 and df.iloc[i].loc[attr] == 0:
                 attr_val0_pos += 1
-            # elif df[s][i] == 0 and df[attr][i] == 0:
             elif df.iloc[i].loc[s] == 0 and df.iloc[i].loc[attr] == 0:
                 attr_val0_neg += 1
-            # elif df[s][i] == 1 and df[attr][i] == 1:
             elif df.iloc[i].loc[s] == 1 and df.iloc[i].loc[attr] == 1:
                 attr_val1_pos += 1
-            # elif df[s][i] == 0 and df[attr][i] == 1:
             elif df.iloc[i].loc[s] == 0 and df.iloc[i].loc[attr] == 1:
                 attr_val1_neg += 1
         except KeyError as e:
             print(attr)
             print(i)
             print(df.iloc[i].loc[s])
-            # print(df.iloc[i].loc[attr])
             print(df.iloc[i])
             print(df)
             sys.exit()
@@ -210,23 +205,18 @@ def variance_impurity_gain(s, attr, df):
     attr_val1_neg = 0
     for i in range(len(df[s])):
         try:
-            # if df[s][i] == 1 and df[attr][i] == 0:
             if df.iloc[i].loc[s] == 1 and df.iloc[i].loc[attr] == 0:
                 attr_val0_pos += 1
-            # elif df[s][i] == 0 and df[attr][i] == 0:
             elif df.iloc[i].loc[s] == 0 and df.iloc[i].loc[attr] == 0:
                 attr_val0_neg += 1
-            # elif df[s][i] == 1 and df[attr][i] == 1:
             elif df.iloc[i].loc[s] == 1 and df.iloc[i].loc[attr] == 1:
                 attr_val1_pos += 1
-            # elif df[s][i] == 0 and df[attr][i] == 1:
             elif df.iloc[i].loc[s] == 0 and df.iloc[i].loc[attr] == 1:
                 attr_val1_neg += 1
         except KeyError as e:
             print(attr)
             print(i)
             print(df.iloc[i].loc[s])
-            # print(df.iloc[i].loc[attr])
             print(df.iloc[i])
             print(df)
             sys.exit()
@@ -314,25 +304,9 @@ def id3_variance_impurity(examples_list, target_attribute, attributes_list):
                 trimmed_attributes.remove(A)
                 new_branch.insert(id3_variance_impurity(examples_list_vi, target_attribute, trimmed_attributes))
                 root.insert(new_branch)
-            # This code does away with separate "in-between" nodes. The
-            # attribute value that leads from a parent to its child is
-            # represented by which side the child is inserted on. Left nodes
-            # (inserted first) represent a "0" value. Right nodes represent
-            # a "1" value.
-            '''
-            examples_list_vi = examples_list.loc[examples_list[A] == i]
-            if (examples_list_vi.empty):
-                new_leaf = Node()
-                new_leaf.label = examples_list[target_attribute].mode()[0]
-                root.insert(new_leaf)
-            else:
-                trimmed_attributes = copy.deepcopy(attributes_list)
-                trimmed_attributes.remove(A)
-                root.insert(id3_variance_impurity(examples_list_vi,target_attribute,trimmed_attributes))
-                '''
     return root
 
-
+'''
 # Computes the number of non-leaf nodes in a tree.
 def count_non_leaf(root):
     # Base cases.
@@ -408,3 +382,4 @@ def post_pruning(dt, L, K):
 
     # Return the pruned tree with the best accuracy
     return optimal_d
+'''

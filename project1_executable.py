@@ -17,8 +17,8 @@ from post_prune import *
 #           '<to-print>')
 #     sys.exit(2)
 
-l = 1
-k = 1
+l = 2
+k = 4
 training_set = 'data_sets2/data_sets2/training_set.csv'
 validation_set = 'data_sets2/data_sets2/validation_set.csv'
 test_set = 'data_sets2/data_sets2/test_set.csv'
@@ -40,29 +40,22 @@ test_df = pd.read_csv(test_set)
 
 # create a tree by first performing the ID3 algorithm
 # this tree is built using ID3 with Information Gain Heuristic
-
 tree_information_gain = id3(train_df, 'Class', list(train_df.columns[0:-1]))
+# create a tree for variance impurity by first performing the ID3 algorithm
 vi_tree = id3_variance_impurity(train_df, 'Class', list(train_df.columns[0:-1]))
-
-# Create a second tree by first performing the ID3 algorithm
-# this tree is built using ID3 with the Variance Impurity heuristic
-#vi_tree = id3_variance_impurity(train_df, 'Class', list(train_df.columns[0:-1]))
 
 # perform post-pruning on the tree
 prune_info_gain_tree = post_pruning(l, k, tree_information_gain, validation_df)
-
-# create a tree for variance impurity by first performing the ID3 algorithm
-# vi_tree = id3(train_df, 'Class', list(train_df.columns[0:-1]))
 
 # perform post-pruning on the variance impurity tree
 prune_vi_tree = post_pruning(l, k, vi_tree, validation_df)
 
 if to_print == 'yes':
     print('Printing Info Gain Decision Tree')
-    printy(tree_information_gain)
+    #printy(tree_information_gain)
     print('Accuracy of Info Gain Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, tree_information_gain)) + '%')
     print('Printing Variance Impurity Tree pre-pruning')
-    printy(vi_tree)
+    #printy(vi_tree)
     print('Accuracy of Variance Impurity Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, vi_tree)) + '%')
 
     print('Printing Variance Impurity Tree post-pruning')

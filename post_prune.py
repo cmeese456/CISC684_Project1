@@ -1,5 +1,7 @@
 import random
+import copy
 from accuracy import measure_accuracy
+import sys
 
 def post_pruning(L,K,tree,validation):
     '''
@@ -9,17 +11,19 @@ def post_pruning(L,K,tree,validation):
     '''
     best_tree = tree
     best_accuracy = measure_accuracy(validation, best_tree)
-    for i in range(1,L):
-        tree_edit = tree # Do I need a deepcopy here?
+    random.seed(0)  # To ensure test results can be repeated, seed random with a constant value.
+    for i in range(0,L):
+        tree_edit = copy.deepcopy(tree)
         M = random.randint(1,K)
-        for i in range(1,M):
+        for i in range(0,M):
             # Get a list of all non-leaf nodes in tree_edit. Pick one of these
             # nodes at random and replace it with the most common value among
             # its leafs.
             nonleafs = []
             nonleafs = get_nonleafs(tree_edit)
             N = len(nonleafs)
-            P = random.randint(1,N)
+            #P = random.randint(1,N)
+            P = random.randint(0,N-1)
             replace_subtree = nonleafs[P]
             leaf_value = get_majority_class(replace_subtree)
             replace_subtree.label = leaf_value
@@ -37,7 +41,7 @@ def get_nonleafs(tree,nonleafs=[]):
     nodes labeled (as "0" or "1") that denote the direction between an attribute
     and its value.
     '''
-    if tree:
+    if tree.left or tree.right:
         nonleafs.append(tree)
         if tree.left.left.left or tree.left.left.right:
             get_nonleafs(tree.left.left,nonleafs)
@@ -49,7 +53,15 @@ def get_classifications(tree,classifications=[]):
     '''
     Get all the leaf values (i.e. classifications) in a tree.
     '''
-    if tree:
+    if tree.left or tree.right:
+        '''
+        try:
+            if tree.left.left or tree.right.left:
+                pass
+        except AttributeError:
+            print(tree.label)
+            sys.exit()
+        '''
         if tree.left.left.left or tree.left.left.right:
             get_classifications(tree.left.left,classifications)
         else:
