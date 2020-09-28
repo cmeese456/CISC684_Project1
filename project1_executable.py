@@ -65,9 +65,3 @@ print('{0:<4d}  {1:<4d}    {2:<9.4f}%  {3:<9.4f}%      {4:<9.4f}%  {5:<9.4f}%'.f
                                                                                       info_gain_preprune_accur,
                                                                                       vi_postprune_accur,
                                                                                       info_gain_postprune_accur))
-
-# print('Accuracy of Info Gain Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, info_gain_tree)) + '%')
-# print('Accuracy of Variance Impurity Decision Tree pre-pruning: ' + str(measure_accuracy(test_df, vi_tree)) + '%')
-# print('L = ' + str(l) + ", K = " + str(k))
-# print('Accuracy of Information Gain Tree post-pruning:', str(measure_accuracy(test_df, prune_info_gain_tree)) + '%')
-# print('Accuracy of Variance Impurity Tree post-pruning:', str(measure_accuracy(test_df, prune_vi_tree)) + '%')
